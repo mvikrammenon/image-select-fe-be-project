@@ -33,13 +33,14 @@ Open [http://localhost:5001] to view in browser
 
 ## Run project in dev mode
 
+Make sure server is running before running UI
 ```
-cd client
+cd server
 npm run dev
 
 // go back to root folder
 
-cd server
+cd client
 npm run dev
 ```
 
