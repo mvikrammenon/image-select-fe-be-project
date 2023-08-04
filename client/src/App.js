@@ -6,18 +6,6 @@ import './App.css';
 
 const VISIBLE_THUMBNAILS_COUNT = 4
 
-function getThumbnails(data = [], thumbnailPage = 0) {
-  if (thumbnailPage < 0 || thumbnailPage > VISIBLE_THUMBNAILS_COUNT - 1) {
-    console.error('Invalid thumbnail scroll value', thumbnailPage)
-    return
-  }
-  const start = VISIBLE_THUMBNAILS_COUNT * thumbnailPage  //4*0, 4*1, 4*2
-  const end = start + VISIBLE_THUMBNAILS_COUNT // 0+3, 4+3
-  const slicedTemplate = data.slice(start, end)
-  console.log('getThumbnails', 'thumbnailPage: ', thumbnailPage, 'slicedTemplate', slicedTemplate)
-  return slicedTemplate
-}
-
 function App() {
   const { data } = useContext(TemplateContext)
   const [thumbnailPage, setThumbnailPage] = useState(0)
@@ -32,7 +20,6 @@ function App() {
   }, [thumbnailPage, data])
 
   useEffect(() => {
-    console.log('useEffect data[0]?.id', data[0]?.id)
     setselectedThumbnailId(data[0]?.id)
   }, [data])
 
@@ -56,8 +43,29 @@ function App() {
     setselectedThumbnailId(id);
   }
 
+  /**
+   * Retrieves the template detail data for the selected thumbnail ID from the data array.
+   * @returns {Object} The template detail data for the selected thumbnail, or {} if not found.
+   */
   const getTemplateDetailData = () => {
+    if(!data || !data.length || !selectedThumbnailId) return {}
     return data.find((i) => i.id === selectedThumbnailId)
+  }
+
+  /**
+   * Retrieves a portion of thumbnails from data array based on thumbnailPage index.
+   * @param {Array} data - An array containing all the thumbnail items.
+   * @param {number} thumbnailPage - Index of the thumbnail page to retrieve.
+   * @returns {Array} An array of thumbnail items representing the current page of thumbnails.
+   */
+  const getThumbnails = (data = [], thumbnailPage = 0) => {
+    if (thumbnailPage < 0 || thumbnailPage > VISIBLE_THUMBNAILS_COUNT - 1) {
+      console.error('Invalid thumbnail scroll value', thumbnailPage)
+      return
+    }
+    const start = VISIBLE_THUMBNAILS_COUNT * thumbnailPage  //4*0, 4*1, 4*2
+    const end = start + VISIBLE_THUMBNAILS_COUNT // 0+3, 4+3
+    return data.slice(start, end)
   }
 
   return (
