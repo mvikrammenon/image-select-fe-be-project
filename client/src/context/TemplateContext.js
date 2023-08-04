@@ -4,7 +4,7 @@ import React, { createContext, useEffect, useState } from 'react';
 const TemplateContext = createContext();
 
 const TemplateContextProvider = ({ children }) => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     // Fetching template data from API on page load

@@ -1,10 +1,65 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { TemplateContext } from './context/TemplateContext'
+import Thumbnail from './components/Thumbnail'
+import TemplateDetail from './components/TemplateDetail'
 import './App.css';
 
+const VISIBLE_THUMBNAILS_COUNT = 4
+
+function getThumbnails(data = [], thumbnailPage = 0) {
+  if (thumbnailPage < 0 || thumbnailPage > VISIBLE_THUMBNAILS_COUNT - 1) {
+    console.error('Invalid thumbnail scroll value', thumbnailPage)
+    return
+  }
+  const start = VISIBLE_THUMBNAILS_COUNT * thumbnailPage  //4*0, 4*1, 4*2
+  const end = start + VISIBLE_THUMBNAILS_COUNT // 0+3, 4+3
+  const slicedTemplate = data.slice(start, end)
+  console.log('getThumbnails', 'thumbnailPage: ', thumbnailPage, 'slicedTemplate', slicedTemplate)
+  return slicedTemplate
+}
+
 function App() {
-  const { data } = useContext(TemplateContext);
-  console.log('data', data);
+  const { data } = useContext(TemplateContext)
+  const [thumbnailPage, setThumbnailPage] = useState(0)
+  const [thumbnailData, setThumbnailData] = useState([])
+  const [selectedThumbnailId, setselectedThumbnailId] = useState(0)
+  const invalidPreviousCount = thumbnailPage === 0
+  const invalidNextCount = thumbnailPage === Math.floor(data.length / VISIBLE_THUMBNAILS_COUNT)
+
+  useEffect(() => {
+    const thumbnailData = getThumbnails(data, thumbnailPage)
+    setThumbnailData(thumbnailData)
+  }, [thumbnailPage, data])
+
+  useEffect(() => {
+    console.log('useEffect data[0]?.id', data[0]?.id)
+    setselectedThumbnailId(data[0]?.id)
+  }, [data])
+
+  const handleNext = () => {
+    if (invalidNextCount) {
+      console.error('Invalid Next click')
+      return
+    }
+    setThumbnailPage(thumbnailPage + 1)
+  }
+
+  const handlePrevious = () => {
+    if (invalidPreviousCount) {
+      console.error('Invalid Previous click')
+      return
+    }
+    setThumbnailPage(thumbnailPage - 1)
+  }
+
+  const handleSelectThumbnail = (id) => {
+    setselectedThumbnailId(id);
+  }
+
+  const getTemplateDetailData = () => {
+    return data.find((i) => i.id === selectedThumbnailId)
+  }
+
   return (
     <>
       <div id="container">
@@ -14,37 +69,26 @@ function App() {
         <div id="main" role="main">
           <div id="large">
             <div className="group">
-              <img src="images/large/7112-b.jpg" alt="Large Image" width="430" height="360" />
-              <div className="details">
-                <p><strong>Title</strong> My Great Template</p>
-                <p><strong>Description</strong> This is a template suited for a professional business site. Original layered Photoshop .psd is included.</p>
-                <p><strong>Cost</strong> $45</p>
-                <p><strong>ID #</strong> 7112</p>
-                <p><strong>Thumbnail File</strong> 7112-m.jpg</p>
-                <p><strong>Large Image File</strong> 7112-b.jpg</p>
-              </div>
+              {/* Key change will trigger getTemplateDetailData call*/}
+              <TemplateDetail
+                key={`template-detail-${setselectedThumbnailId}`}
+                data={getTemplateDetailData()}
+              />
             </div>
           </div>
           <div className="thumbnails">
             <div className="group">
-              <a href="#" title="7111">
-                <img src="images/thumbnails/7111-m.jpg" alt="7111-m" width="145" height="121" />
-                <span>7111</span>
-              </a>
-              <a href="#" className="active" title="7112">
-                <img src="images/thumbnails/7112-m.jpg" alt="7111-m" width="145" height="121" />
-                <span>7112</span>
-              </a>
-              <a href="#" title="7118">
-                <img src="images/thumbnails/7118-m.jpg" alt="7111-m" width="145" height="121" />
-                <span>7118</span>
-              </a>
-              <a href="#" title="7124">
-                <img src="images/thumbnails/7124-m.jpg" alt="7111-m" width="145" height="121" />
-                <span>7124</span>
-              </a>
-              <span className="previous disabled" title="Previous">Previous</span>
-              <a href="#" className="next" title="Next">Next</a>
+              {thumbnailData.length && thumbnailData.map((i) =>
+                <Thumbnail 
+                  key={i.id}
+                  id={i.id}
+                  fileName={i.thumbnail}
+                  clickHandler={handleSelectThumbnail}
+                  isActive={selectedThumbnailId === i.id}
+                />
+              )}
+              <span className={`previous ${invalidPreviousCount && 'disabled'}`} title="Previous" onClick={handlePrevious}>Previous</span>
+              <a href="#" className={`next ${invalidNextCount && 'disabled'}`} title="Next" onClick={handleNext}>Next</a>
             </div>
           </div>
         </div>
