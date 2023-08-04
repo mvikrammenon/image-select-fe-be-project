@@ -3,7 +3,7 @@ const extendedTemplatesJson = require('../../data/extendedTemplate.json')
 
 /**
  * @description Get all template
- * @route GET /api/templates
+ * @route GET /api/v1/templates
  * @access public
  */
 const getTemplates = (req, res) => {
@@ -12,7 +12,7 @@ const getTemplates = (req, res) => {
 
 /**
  * @description Get all extended template
- * @route GET /api/templates/extended
+ * @route GET /api/v1/templates/extended
  * @access public
  */
 const getExtendedTemplates = (req, res) => {

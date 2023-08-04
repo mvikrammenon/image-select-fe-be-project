@@ -1,6 +1,12 @@
 # Express/React Coding excercise
 
+A simple react app that shows thumbnails of images and a detail section that shows corresponding larger image of the thumbnail and some additional info.
+Uses Express.js to serve the UI and exposes an endpoint at `/api/v1/template` that provides a JSON containing image name, thumbnail name and few other details.
 This project's UI was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Demo
+
+![](https://github.com/mvikrammenon/image-select-fe-be-project/blob/84d7533534a5baca7e6e80e3bf494e603c539e06/demo/demo.gif)
 
 ## Pre requisites
 - Node.js
