@@ -1,7 +1,12 @@
 # Express/React Coding excercise
 
-A simple react app that shows thumbnails of images and a detail section that shows corresponding larger image of the thumbnail and some additional info.
-Uses Express.js to serve the UI and exposes an endpoint at `/api/v1/template` that provides a JSON containing image name, thumbnail name and few other details.
+- A simple react app that shows:
+    - Thumbnails of images
+    - A detail section that shows corresponding larger image
+- Uses Express.js to serve the UI
+- Exposes an endpoint at `/api/v1/templates` that provides a JSON containing image name, thumbnail name and few other details.
+- Does not have Unit tests
+
 This project's UI was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Demo
