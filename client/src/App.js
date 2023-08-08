@@ -1,7 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { TemplateContext } from './context/TemplateContext'
-import Thumbnail from './components/Thumbnail'
-import TemplateDetail from './components/TemplateDetail'
+import { Header, Footer, Thumbnail, TemplateDetail } from './components'
 import './App.css';
 
 const VISIBLE_THUMBNAILS_COUNT = 4
@@ -71,9 +70,7 @@ function App() {
   return (
     <>
       <div id="container">
-        <header>
-          Code Development Project
-        </header>
+        <Header />
         <div id="main" role="main">
           <div id="large">
             <div className="group">
@@ -100,9 +97,7 @@ function App() {
             </div>
           </div>
         </div>
-        <footer>
-          <a href="instructions.pdf">Download PDF Instructions</a>
-        </footer>
+        <Footer />
       </div>
     </>
   );
