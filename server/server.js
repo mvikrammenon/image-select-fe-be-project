@@ -6,8 +6,19 @@ const app = express()
 
 app.use('/api/v1/templates', require('./routes/templateRoutes'))
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(express.static(path.join(__dirname, "..", "client/build")));
+app.use(express.static(path.join(__dirname, '..', 'client/build')))
 
-app.listen(port, () => {
-    console.log('Server started on port', port)
-})
+function startServer() {
+    if (require.main === module) {
+        app.listen(port, () => {
+            console.log('Server started on port', port)
+        });
+    }
+}
+
+startServer()
+
+module.exports = {
+    app,
+    startServer,
+};
