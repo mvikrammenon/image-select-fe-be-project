@@ -1,12 +1,12 @@
 import { useState, useContext, useEffect } from 'react'
 import { TemplateContext } from './context/TemplateContext'
-import { Header, Footer, Thumbnail, TemplateDetail } from './components'
+import { Header, Footer, Thumbnail, TemplateDetail, AddTemplateForm } from './components'
 import './App.css';
 
 const VISIBLE_THUMBNAILS_COUNT = 4
 
 function App() {
-  const { data } = useContext(TemplateContext)
+  const { data, setData } = useContext(TemplateContext)
   const [thumbnailPage, setThumbnailPage] = useState(0)
   const [thumbnailData, setThumbnailData] = useState([])
   const [selectedThumbnailId, setselectedThumbnailId] = useState(0)
@@ -83,7 +83,7 @@ function App() {
           </div>
           <div className="thumbnails">
             <div className="group">
-              {thumbnailData.length && thumbnailData.map((i) =>
+              {thumbnailData?.length && thumbnailData.map((i) =>
                 <Thumbnail 
                   key={i.id}
                   id={i.id}
@@ -98,6 +98,7 @@ function App() {
           </div>
         </div>
         <Footer />
+        <AddTemplateForm setTemplateData={setData} templateData={data} />
       </div>
     </>
   );

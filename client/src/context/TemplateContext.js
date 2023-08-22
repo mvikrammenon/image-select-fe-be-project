@@ -15,7 +15,7 @@ const TemplateContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <TemplateContext.Provider value={{ data }}>
+    <TemplateContext.Provider value={{ data, setData }}>
       {children}
     </TemplateContext.Provider>
   );
